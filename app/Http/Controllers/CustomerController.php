@@ -38,23 +38,31 @@ class CustomerController extends Controller
         return to_route('customers.index');
     }
 
-    public function show()
+    public function show(Customer $customer)
     {
-        //
+        return $customer;
     }
 
-    public function edit(string $id)
+    public function edit(Customer $customer)
     {
-        //
+        return view('customers.edit')->with(['customer'=>$customer]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, Customer $customer)
     {
-        //
+        $customer->update([
+            'name'=> $request->name,
+            'phone'=> $request->phone,
+            'address'=> $request->address,
+        ]);
+
+        return to_route('customers.edit')->with(['message' => "Muvaffiqiyatli o'zgartirildi"]);
     }
 
-    public function destroy(string $id)
+    public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+
+        return redirect()->route('customers.index')->with(['message'=> "Muvaffiqiyatli o'chirildi "]);
     }
 }

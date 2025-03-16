@@ -40,19 +40,24 @@ class OrderController extends Controller
         return to_route('orders.index');
     }
 
-    public function show(string $id)
+    public function show(Order $order)
     {
-        //
+        return $order;
     }
 
-    public function edit(string $id)
+    public function edit(Order $order)
     {
-        //
+        return view('orders.edit')->with(['order'=>$order]);
     }
 
     public function update(Request $request, Order $order)
     {
-        $order->update(['is_paid' => true]);
+        $order->update([
+            'customer_id' => $request->customer_id,
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+            'is_paid' => $request->has('is_paid') ? 1 : 0,
+        ]);
 
         return redirect()->route('orders.index')->with('success', 'To‘lov amalga oshirildi!');
     }
